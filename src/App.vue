@@ -1,6 +1,14 @@
 <script setup>
 import { Transition } from 'vue';
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterLink, RouterView, useRouter } from 'vue-router';
+import { isLoggenIn, logout } from './auth';
+
+const router = useRouter();
+
+const onUserLogout = () => {
+	logout();
+	router.push('/login');
+};
 </script>
 
 <template>
@@ -10,6 +18,10 @@ import { RouterLink, RouterView } from 'vue-router';
 				<RouterLink to="/">Dashboard</RouterLink>
 				<RouterLink to="/tasks">Tasks</RouterLink>
 				<RouterLink to="/settings">Settings</RouterLink>
+			</div>
+			<div class="navigation-right">
+				<RouterLink v-if="!isLoggenIn" to="/login" class="">Login</RouterLink>
+				<button v-else class="btn-logout" @click="onUserLogout">Logout</button>
 			</div>
 		</nav>
 		<main class="container">
