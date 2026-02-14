@@ -1,28 +1,31 @@
-import DashboardView from '@/pages/DashboardView.vue';
 import NotFoundView from '@/pages/NotFoundView.vue';
-import ProfileView from '@/pages/ProfileView.vue';
-import SecurityView from '@/pages/SecurityView.vue';
-import SettingsView from '@/pages/SettingsView.vue';
-import TaskDetailsView from '@/pages/TaskDetailsView.vue';
-import TasksView from '@/pages/TasksView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
 	history: createWebHistory(),
 	routes: [
-		{ path: '/:pathMatch(.*)*', name: 'Page Not Found', component: NotFoundView },
-		{ path: '/', component: DashboardView },
+		{ path: '/', component: () => import('../pages/DashboardView.vue') },
 		{ path: '/dashboard', redirect: '/' },
-		{ path: '/tasks', component: TasksView },
-		{ path: '/tasks/:id', component: TaskDetailsView },
+		{ path: '/tasks', component: () => import('../pages/TasksView.vue') },
+		{
+			path: '/tasks/:id',
+			component: () => import('../pages/TaskDetailsView.vue'),
+			props: true,
+		},
 		{
 			path: '/settings',
-			component: SettingsView,
+			component: () => import('../pages/SettingsView.vue'),
 			children: [
-				{ path: 'profile', component: ProfileView },
-				{ path: 'security', component: SecurityView },
+				{ path: '', redirect: '/settings/profile' },
+				{ path: 'profile', component: () => import('../pages/ProfileView.vue') },
+				{
+					path: 'security',
+					component: () => import('../pages/SecurityView.vue'),
+				},
 			],
 		},
+		{ path: '/404', name: 'Page Not Found', component: NotFoundView },
+		{ path: '/:pathMatch(.*)*', redirect: '/404' },
 	],
 	linkActiveClass: 'router-link--intermediate',
 	linkExactActiveClass: 'router-link--active',

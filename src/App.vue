@@ -9,12 +9,12 @@ import { RouterLink, RouterView } from 'vue-router';
 			<div class="navigation-left">
 				<RouterLink to="/">Dashboard</RouterLink>
 				<RouterLink to="/tasks">Tasks</RouterLink>
-				<RouterLink to="/settings/profile">Settings</RouterLink>
+				<RouterLink to="/settings">Settings</RouterLink>
 			</div>
 		</nav>
 		<main class="container">
 			<RouterView v-slot="{ Component }">
-				<Transition name="fade">
+				<Transition name="fade" mode="out-in">
 					<Component :is="Component" />
 				</Transition>
 			</RouterView>
